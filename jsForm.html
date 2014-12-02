@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+
+
+<p>Press enter to run the script</p>
+
+<script>
+//isBadUrl() takes a url as an argument and returns true if it returns a 404
+   function isBadUrl(url) {
+       var http = new XMLHttpRequest();
+       http.open('HEAD', url, false);
+       http.send();
+       alert('isBadURL executed');
+       return http.status == 404;
+       
+   }
+   //issue a get
+   // this loop iterates through the links on a given page
+   function scanPage() {
+   //alert('scanpage');
+   var url = document.myform.userInput.value;
+   for (i = 0; i < url.links.length; i++) {
+       if (isBadUrl(url.links[i])) {
+           url.write(url.links[i]);
+       }
+    alert('for loop executed ');  
+    	return false;
+   }
+   alert('after for loop');
+
+	}
+</script>
+
+<form name="myform" onsubmit="return scanPage();" class="my-form">
+    <input type="text" name="userInput" value="http://en.wikipedia.org/wiki/Dinosaur">
+    <input type="submit" value="Submit">
+</form>
+
+
+
+</body>
+</html>

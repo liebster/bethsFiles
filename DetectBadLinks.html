@@ -1,0 +1,15 @@
+   
+   //isBadUrl() takes a url as an argument and returns true if it returns a 404
+   function isBadUrl(url) {
+       var http = new XMLHttpRequest();
+       http.open('HEAD', url, false);
+       http.send();
+       return http.status == 404;
+   }
+   
+   // this loop iterates through the links on a given page
+   for (i = 0; i < document.links.length; i++) {
+       if (isBadUrl(document.links[i])) {
+           console.log(document.links[i]);
+       }
+   }
