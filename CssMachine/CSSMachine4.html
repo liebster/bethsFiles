@@ -1,0 +1,449 @@
+<!--TODO
++ can I do a one-color version? 
++ add scrollbar for panel
++ change positioning of css picker, if possible to right of div, aligned with its top
++ make derivative color function.  Use in Level 1 application. 
++ set default color of color picker to current color
+
+-->
+
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <script src="http://d3js.org/topojson.v1.min.js" charset="utf-8"></script>
+    <script type="text/javascript" src="https://rawgit.com/erex78/a488f626e196e43adec9/raw/5aa537595814231ca7e0e71382c8967cbbec4c78/polymaps.js" charset="utf-8"></script>
+    <script src="src/jQuery/jquery-1.11.2.min.js"></script>
+    <script src="src/colpick-jQuery-Color-Picker-master/js/colpick.js" type="text/javascript"></script>
+    <script type='text/javascript' src='src/TinyColor-master/tinycolor.js'></script>
+    <link href='http://fonts.googleapis.com/css?family=Lato:400,700|Josefin+Sans:400,600' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="src/colpick-jQuery-Color-Picker-master/css/colpick.css" type="text/css">
+    <link href="CSSMachineGUI.css" rel="stylesheet">
+    
+
+    <style>
+            .map {
+				background-color: white;
+				width: 100%;
+				height: 100%;
+			}
+        
+   
+    </style>
+    <style class="newStyle"></style>
+    
+
+</head>
+
+<body>
+    <div class = "csspanel closed"><div id= "csspaneltitle">Map Styles CSS: (copy and paste)</div><div id = "close">X</div>
+        <div class = "panelcontents"></div>
+    </div>
+    <div class="panel">
+        <div class = 'nav'>
+            <li id='wizard'>Wizard</li>
+            <li id='cssbtn'>CSS</li>
+        </div>
+        
+        <div class = "pickers">
+            <div class = "row1"><div class="colorbox cb1"></div><div class = "featurelabel1">Set all</div></div>
+            <div class = "row2"> <div class="colorbox cb2" id="landheader"></div><div class = "featurelabel2">Land</div></div>
+            <div class = "closed details">
+                <div class = "row3"> <div class="colorbox cb3" id="land"></div><div class = "featurelabel">Land Area</div></div>
+                <div class = "row3"> <div class="colorbox cb3" id="parks"></div><div class = "featurelabel">Parks</div></div>
+                <div class = "row3"> <div class="colorbox cb3" id="buildings"></div><div class = "featurelabel">Buildings</div></div>
+                <div class = "row3"> <div class="colorbox cb3" id="urban"></div><div class = "featurelabel">Urban areas</div></div>
+                <div class = "row3"> <div class="colorbox cb3" id="admin"></div><div class = "featurelabel">Political Borders</div></div>
+            </div>
+
+
+            <div class = "row2"> <div class="colorbox cb2" id="waterheader"></div><div class = "featurelabel2">Water</div></div>
+            <div class = "closed details">
+                <div class = "row3"> <div class="colorbox cb3" id="bigwater"></div><div class = "featurelabel">Oceans and Major Lakes</div></div>
+                <div class = "row3"> <div class="colorbox cb3" id="minorlakes"></div><div class = "featurelabel">Rivers and Minor Lakes</div></div>
+                <div class = "row3"> <div class="colorbox cb3" id="waterways"></div><div class = "featurelabel">Streams and canals</div></div>  
+            </div>
+
+            <div class = "row2"> <div class="colorbox cb2" id="roadheader"></div><div class = "featurelabel2">Roads</div></div>
+            <div class = "closed details">
+                <div class = "row3"> <div class="colorbox cb3" id="motorway"></div><div class = "featurelabel">Freeways</div></div>
+                <div class = "row3"> <div class="colorbox cb3" id="majorroads"></div><div class = "featurelabel">Major Roads</div></div>
+                <div class = "row3"> <div class="colorbox cb3" id="otherroads"></div><div class = "featurelabel">Other Roads</div></div>  
+                <div class = "row3"> <div class="colorbox cb3" id="rail"></div><div class = "featurelabel">Rail</div></div>
+                <div class = "row3"> <div class="colorbox cb3" id="runway"></div><div class = "featurelabel">Runway</div></div>
+                <div class = "row3"> <div class="colorbox cb3" id="walking"></div><div class = "featurelabel">Walking Path</div></div>
+                <div id = "otherstuff"></div>
+            </div>
+        </div>
+    </div>
+    
+    
+    <!-- Color Picker behavior -->
+    <script>
+        jQuery(document).ready( function($) {
+                    
+            //-----Style rules
+            var mapstyles = {
+                
+                otherstuff : {
+                    "elem": "path._undefined",
+                    "styling": 'fill',
+                    "lum":1,
+                    "fill": "none",
+                    "stroke": "none"
+                },
+                //land sub-elements
+                land : {
+                    "elem": ".land_polygons_complete",
+                    "styling": 'fill',
+                    "lum":1,
+                    "fill": "rgb(232, 229, 229)",
+                    "stroke": "none"
+                },
+            
+                parks : {
+                    "elem": ".landuse_natural5, .landuse_natural10, .landuse_natural13",
+                    "styling": 'fill',
+                    "opacity": 'opacity',
+                    "lum": .8,
+                    "fill": "rgba(212, 212, 212, 0.94)",
+                    "stroke": "none"
+                    
+                },
+            
+                buildings : {
+                    "elem": ".landuse_building13, .landuse_other13, .landuse_school13",
+                    "styling": 'fill',
+                    "lum": .9,
+                    "fill": "rgb(240, 240, 240)",
+                    "stroke": "none"
+                },
+                   
+                urban : {
+                    "elem": ".landuse_urban11",
+                    "styling": 'fill',
+                    "lum": 1.2,
+                    "fill": "rgb(230, 230, 230)",
+                    "stroke": "none"
+                },
+            
+                admin : {
+                    "elem": ".admin_2, .admin_3, .admin_4",
+                    "styling": 'stroke',
+                    "lum": .5,
+                    "fill": "none",
+                    "stroke": "rgb(160, 160, 160)"
+                },    
+                
+                //water
+                bigwater : {
+                    "elem": ".rectile, .water4",
+                    "styling": 'fill',
+                    "lum": 1,
+                    "fill": "rgb(172, 169, 169)",
+                    "stroke": "none"
+                },
+                
+                minorlakes : {
+                    "elem" : ".water10",
+                    "styling": 'fill',
+                    "lum": 1.1,
+                    "fill": "rgb(216, 214, 214)",
+                    "stroke": "none"
+                },
+                waterways : {
+                    "elem": ".waterway13, .waterway15",
+                    "styling": 'stroke',
+                    "lum": 1.1,
+                    "fill": "none",
+                    "stroke": "gray"
+                }, 
+
+                //roads
+                otherroads : {
+                    "elem": ".tertiary, .residential, .minorlinks, .service",
+                    "styling": 'stroke',
+                    "lum": .9,
+                    "fill": "none",
+                    "stroke": "rgb(216, 214, 214)"
+                },
+                
+                motorway : {
+                    "elem": ".motorway, .ne_roads",
+                    "styling": 'stroke',
+                    "lum": 1.2,
+                    "fill": "none",
+                    "stroke": "#ffffff"
+                },
+            
+                majorroads : {
+                    "elem": ".trunk_primary, .secondary, .majorlinks",
+                    "styling": 'stroke',
+                    "lum": 1,
+                    "fill": "none",
+                    "stroke": "rgb(250, 250, 250)"
+                }, 
+                
+                rail : {
+                    "elem": ".rail, .minorrail",
+                    "styling": 'stroke',
+                    "lum": .95,
+                    "fill": "none",
+                    "stroke": "gray"
+                },
+                runway : {
+                    "elem": ".runway",
+                    "styling": 'stroke',
+                    "lum": .6,
+                    "fill": "none",
+                    "stroke": "gray"
+                },
+                walking : {
+                    "elem": ".path",
+                    "styling": 'stroke',
+                    "lum": .7,
+                    "fill": "none",
+                    "stroke": "rgb(185,185,185)"
+                }              
+            }     
+            
+            var groupStyles = {
+                
+                "#landheader" : {
+                    "hue": 1,
+                    "lum": 1
+                },
+                "#waterheader" : {
+                    "hue": 1,
+                    "lum": .8
+                },
+                "#roadheader" : {
+                    "hue": .9,
+                    "lum": 1.3
+                }
+                
+            }
+            
+            //---- newCSS: string variable to store CSS
+            var newCSS = "";
+            initializeCSS();
+            
+            //----initializeCSS:  Called only on page load. 
+            function initializeCSS() {
+                updateStyles();           
+                
+                //sets header colors of level 2 to another element in the list
+                $("#landheader").css("background-color", mapstyles.land.fill);
+                $("#waterheader").css("background-color", mapstyles.bigwater.fill);
+                $("#roadheader").css("background-color", mapstyles.motorway.stroke);
+            }
+            
+            //----Nested Menu Script
+            $(".featurelabel2").click(function() {
+                var row = $(this).closest(".row2");
+                row.next().slideToggle(200);
+            });
+            
+            //--- handles clicks on css button
+            $("#cssbtn").click(function() {
+                updateCSSPanel();
+                $(".csspanel").removeClass("closed");
+            });
+            
+            function updateCSSPanel() {
+                $(".panelcontents").empty();
+                $(".panelcontents").append(newCSS);
+            }
+            
+            //--- close css panel
+            $("#close").click(function() {
+                //$(".csspanel").removeClass("csspanel");
+                $(".csspanel").addClass("closed");
+            });
+            
+            //------ clicks on one-color version level 1
+            $('.cb1').colpick({
+            layout:'hex',
+            submit:0,
+            colorScheme:'dark',
+            onChange:function(hsb,hex,rgb,el,bySetColor) {
+                $(el).css('background-color','#'+hex);
+                if(!bySetColor) $(el).val(hex);
+                var base = tinycolor(hex);
+                
+                var row = $(el).closest(".row1");
+                var subelems = row.parent().find('.cb2');
+                
+                subelems.each(
+                    function() {
+                        var subid = "#"+$(this).attr("id");
+                        var newHex = base.toHsl();
+                        var newL = (newHex.l)*(groupStyles[ subid ].lum);
+                        var newHue = (newHex.h)*(groupStyles[ subid ].hue);
+                        
+                        if (newL > 1) {
+                            newL = 1;
+                        } 
+                        newHex.h = newHue;
+                        newHex.l = newL;
+                        newHex = tinycolor(newHex);
+                        newHex = newHex.toHexString();
+                        
+                        setDerivativeColors(hsb,newHex,rgb,$(subid),bySetColor);
+                        $(subid).css('background-color', newHex);
+                    
+                } );
+            }
+            });
+            
+            //-----clicks on level 2  
+            $('.cb2').colpick({
+            layout:'hex',
+            submit:0,
+            colorScheme:'dark',
+            onChange:setDerivativeColors
+            });    
+        
+            //Sets colors of subcategories based on a level 2 color
+            function setDerivativeColors(hsb,hex,rgb,el,bySetColor) {
+                $(el).css('background-color','#'+hex);
+                if(!bySetColor) $(el).val(hex);
+                
+                var row = $(el).closest(".row2");
+                var subelems = row.next().find('.cb3');
+                
+                subelems.each(
+                    
+                    function() {
+                        var sub = $(this).attr("id");
+                        var stylename = mapstyles[ sub ].styling;
+
+                        var basemod = tinycolor(hex);
+                        var hslcolor = basemod.toHsl();
+                        var newL = (hslcolor.l)*(mapstyles[ sub ].lum);
+
+                        if (newL > 1) {
+                            hslcolor.l = 1;
+                        } else {
+                            hslcolor.l = newL;
+                        }
+                        basemod = tinycolor(hslcolor);
+
+                        //----write styles to mapstyles variable
+                        mapstyles[ sub ][stylename] = basemod.toHexString();
+                    
+                } );
+                
+                updateStyles();
+                
+                }
+            
+            //----clicks on level 3
+            $('.cb3').colpick({
+            layout:'hex',
+            submit:0,
+            colorScheme:'dark',
+            onChange:function(hsb,hex,rgb,el,bySetColor) {
+                $(el).css('background-color','#'+hex);
+                if(!bySetColor) $(el).val(hex);
+                
+                var pickerid = $(el).attr('id');
+                var color = '#'+hex;
+                var stylename = mapstyles[ pickerid ].styling;
+                
+                //write styles to mapstyles variable
+                mapstyles[ pickerid ][stylename] = color;
+                updateStyles();
+            } 
+         });    
+            
+            //------ updateStyles: calls 3 functions to update look of picker and store new CSS in DOM
+            function updateStyles() {
+                setBoxColors();
+                storeNewCSS();
+                insertNewStyle();
+                updateCSSPanel();
+            }
+       
+            //----- setBoxColors: Sets the colors of the boxes to corresponding styles stored in mapstyles.   
+            function setBoxColors() {
+                $.each(mapstyles, function(key, value) {
+                    var idname = "#"+key;
+                    var styleType = mapstyles[ key ].styling;
+                    $(idname).css("background-color", mapstyles[ key ][ styleType ]);                
+                });
+            }
+
+            //----- storeNewCSS: iterates over mapstyles, reads values and convert to css, stores in newCSS variable. 
+            function storeNewCSS() {
+                newCSS = "";
+                $.each(mapstyles, csstext);
+                newCSS += ".motorway {stroke-width: 2;} .landuse_natural5, .landuse_natural10, .landuse_natural13 .landuse_urban11 {opacity: .5; }";
+            }
+                
+            //----- insertNewStyle: inserts new CSS into the dom
+            function insertNewStyle() {
+                var replacementStyle = $("<style class='newStyle'></style>").text(newCSS); 
+                $(".newStyle").replaceWith(replacementStyle);
+            } 
+            
+            
+            //------ csstext: creates one line of css for each set of classes aka each field in mapstyles
+            function csstext(key, val) {     
+                var mapcat = mapstyles[ key ];
+                text = (mapcat.elem + " {" + "fill: " + mapcat.fill
+                        + "; stroke: "+ mapcat.stroke+";} ");
+                newCSS += text;
+            }
+        
+        }); //end ready
+        
+       
+    </script>
+    
+    <!--begin maps script-->
+    <script>
+        var po = org.polymaps;
+
+        var mapDiv = d3.select('body')
+            .append('div').append('svg').attr('class', 'map')
+
+        var requestParams = {
+            invertTileY: true,
+            invertY: false,
+            s: 5,
+            ringSpan: 7,
+            srid: 4326
+        };
+ 
+        var url = "http://tiles.mapsense.co/tilist/tile/citrus/{Z}/{X}/{Y}.topojson?";
+				url += Object.keys(requestParams).map(function(k) {
+					return k + '=' + requestParams[k];
+				}).join('&');
+				var map = po.map()
+				.container(mapDiv.node())
+				.add(po.interact())
+				.center({lon: -122.34935376214322, lat: 37.75751081955728})
+				.zoom(12);
+
+				var tj = po.d3TopoJson()
+				.url(url)
+				.attr('class', function(d) {
+					var classes = [];
+					if (d.properties) {
+						if (d.properties.layer)
+							classes.push(d.properties.layer);
+						if (d.properties.sub_layer)
+							classes.push(d.properties.sub_layer);
+					}
+					return classes.join(' ');
+				})
+				.tile(true)
+				.clip(true);
+
+				map.add(tj);
+    </script>
+</body>
+
+</html>
