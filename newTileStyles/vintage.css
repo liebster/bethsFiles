@@ -21,7 +21,7 @@ path {
 .rectile {
 	fill: rgb(111, 186, 180);
 }
-.poly {
+.land {
 	fill: rgb(255, 250, 242);
 	stroke: rgb(70, 71, 71);
 	stroke-width: 0;
@@ -31,11 +31,11 @@ path {
     display: none;
 }
 .water_polygon {
-	fill: rgb(135, 200, 202);
+	fill: rgb(111, 186, 180);
 	stroke: rgb(135, 200, 202);
 }
 
-.country_border disp_border {
+.country_border .disp_border {
 	stroke: grey;
 	stroke-dasharray: 3 3;
 	stroke-width: 1;
