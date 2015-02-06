@@ -32,6 +32,7 @@ path {
 
 .water_polygon {
 	fill:rgb(15, 15, 15);
+	stroke: rgb(189, 188, 188);
 }
 .water_line {
 	stroke: rgb(50, 50, 50);
