@@ -1,0 +1,99 @@
+.labels{
+  font-size: 18;
+  fill: #999;
+  font-weight: 200;
+  text-transform: uppercase;
+  stroke-width: .3;
+  /*stroke: grey;*/
+  font-stretch: expanded;
+  letter-spacing: 1.5;
+  font-family: Josefin sans;
+}
+
+.map {
+	background-color: white;
+}
+path {
+	vector-effect: non-scaling-stroke;
+	stroke-linejoin: round;
+	stroke-linecap: round;
+}
+.rectile {
+	fill: rgb(15,15,15);
+}
+.poly {
+	fill: rgb(0,0,0);
+	stroke: rgb(189, 188, 188);
+	stroke-width: 1;
+}
+.agriculture {
+    display: none;
+}
+
+.water_polygon {
+	fill:rgb(15, 15, 15);
+}
+.water_line {
+	stroke: rgb(50, 50, 50);
+	stroke-width: 1;
+	opacity: .3;
+  	fill: none;
+}
+.park {
+	fill: rgba(15, 15, 15, .3);
+	stroke: none;
+}
+.building {
+	fill: none;
+	stroke: rgb(80, 80, 80);
+	stroke-width: .52;
+}
+.school {
+	fill: rgb(15, 15, 15);
+	stroke: none;
+}
+.other {
+	stroke: rgb(50, 50, 50);
+}
+.urban {
+	fill: none;
+	stroke: none;
+}
+
+.motorway {
+	stroke-width: 2;
+}
+
+.roads {
+	stroke-linejoin: round;
+	fill: none;
+    stroke: #333333;
+}
+.country_border disp_border {
+	stroke: grey;
+	stroke-dasharray: 3 3;
+	stroke-width: 1;
+    fill: none;
+}
+.state_border {
+	stroke: grey;
+	stroke-dasharray: 3 3;
+    fill: none;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

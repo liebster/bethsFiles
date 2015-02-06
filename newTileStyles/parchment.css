@@ -1,0 +1,128 @@
+.labels{
+font-size: 14;
+fill: #777;
+font-weight: 600;
+text-transform: uppercase;
+stroke-width: .3;
+/*stroke: grey;*/
+font-stretch: expanded;
+letter-spacing: 1.5;
+font-family: Josefin sans;
+}
+.map {
+background-color: white;
+}
+path {
+vector-effect: non-scaling-stroke;
+stroke-linejoin: round;
+stroke-linecap: round;
+}
+.rectile {
+fill: rgb(184, 189, 193);
+}
+.agriculture {
+    display: none;
+}
+path._undefined.none {
+fill: none;
+}
+.poly {
+fill: rgb(227, 214, 197);
+stroke: rgb(151, 111, 96);
+stroke-width: 1;
+}
+.water_polygon {
+fill: rgb(184, 189, 193);
+stroke: rgb(151, 111, 96);
+stroke-width: .5;
+}
+.water_line {
+stroke: rgb(184, 189, 193);
+stroke-width: 1;
+opacity: .3;
+fill: none;
+}
+.park {
+fill: rgb(203, 188, 166);
+stroke-width: .55;
+stroke: none;
+opacity: .3;
+}
+.building {
+fill: rgb(212, 201, 186);
+stroke: none;
+stroke-width: .52;
+}
+.school {
+fill: rgba(90, 46, 5, 0.12);
+stroke: none;
+}
+.other {
+fill: rgb(227, 214, 197);
+stroke: none;
+}
+.urban {
+fill: rgba(255, 255, 255, 0.3);
+stroke: none;
+}
+.roads {
+stroke-linejoin: round;
+fill: none;
+}
+.ne_10m_roads {
+stroke: rgb(174, 162, 149);
+stroke-width: 1;
+}
+.motorway {
+stroke: rgb(161, 141, 127);
+stroke-width: 1;
+}
+.arterial_major {
+stroke: rgb(213, 197, 183);
+stroke-width: 1;
+}
+.arterial_minor {
+stroke: rgb(202, 183, 170);
+stroke-width: 1;
+}
+.road_med {
+stroke: rgb(216, 200, 187);
+stroke-width: 1;
+}
+.road_minor {
+stroke: rgba(198, 176, 159, 0.55);
+stroke-width: 1;
+}
+.rail_major {
+stroke: rgb(151, 125, 101);
+stroke-dasharray: 3 5;
+stroke-width: 1;
+}
+.rail_minor {
+stroke: rgb(172, 157, 140);
+stroke-dasharray: 3 3;
+stroke-width: 1;
+}
+.runway {
+stroke-width: black;
+stroke: rgb(198, 165, 144);
+}
+.path {
+stroke: rgb(185,185,185);
+stroke-dasharray: 3 3;
+stroke-width: 1;
+}
+
+.country_border disp_border{
+stroke: rgb(151, 111, 96);
+stroke-dasharray: 6 2;
+stroke-width: 1;
+fill: none;
+}
+.state_border{
+stroke: rgb(151, 111, 96);
+stroke-dasharray: 3 3;
+fill: none;
+}
+
+
