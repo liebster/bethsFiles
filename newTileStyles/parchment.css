@@ -26,7 +26,7 @@ fill: rgb(184, 189, 193);
 path._undefined.none {
 fill: none;
 }
-.poly {
+.land {
 fill: rgb(227, 214, 197);
 stroke: rgb(151, 111, 96);
 stroke-width: 1;
