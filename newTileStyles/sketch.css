@@ -27,6 +27,7 @@ stroke-width: 1;
 }
 .water_polygon {
 fill: rgb(240, 240, 240);
+stroke: rgb(199, 198, 198);
 }
 .water_line {
 stroke: rgb(204, 202, 202);
